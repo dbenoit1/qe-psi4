@@ -14,27 +14,18 @@ def run_psi4(
     multiplicity=1,
     save_hamiltonian=False,
     save_rdms=False,
-    n_active_extract="None",
-    n_occupied_extract="None",
+    n_active_extract=None,
+    n_occupied_extract=None,
     freeze_core_extract=False,
     nthreads=1,
-    options="None",
-    wavefunction="None",
+    options=None,
+    wavefunction=None,
 ):
     os.mkdir("/app/scr")
     os.environ["PSI_SCRATCH"] = "/app/scr"
 
-    if n_active_extract == "None":
-        n_active_extract = None
-    if n_occupied_extract == "None":
-        n_occupied_extract = None
-    if options == "None":
-        options = None
-    else:
-        if isinstance(options, str):
-            options = json.loads(options)
-    if wavefunction == "None":
-        wavefunction = None
+    if isinstance(options, str):
+        options = json.loads(options)
 
     with open(geometry) as f:
         geometry = json.load(f)
