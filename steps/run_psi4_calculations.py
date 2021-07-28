@@ -20,6 +20,7 @@ def run_psi4(
     nthreads=1,
     options="None",
     wavefunction="None",
+    custom_basis_sets="None",
 ):
     os.mkdir("/app/scr")
     os.environ["PSI_SCRATCH"] = "/app/scr"
@@ -35,6 +36,14 @@ def run_psi4(
             options = json.loads(options)
     if wavefunction == "None":
         wavefunction = None
+    if custom_basis_sets != "None":
+        if "PSIPATH" not in os.environ:
+            os.environ["PSIPATH"] = ""
+        if isinstance(custom_basis_sets, list):
+            custom_basis_sets = ["/app/step/" + directory for directory in custom_basis_sets]
+            os.environ["PSIPATH"] += os.pathsep + os.pathsep.join(custom_basis_sets)
+        elif isinstance(custom_basis_sets, str):
+            os.environ["PSIPATH"] += os.pathsep + "/app/step/" + custom_basis_sets
 
     with open(geometry) as f:
         geometry = json.load(f)
